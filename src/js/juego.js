@@ -1,27 +1,95 @@
-/* El objeto Juego sera el encargado del control de todo el resto de los Objetos
-existentes.
-Le dara ordenes al Dibujante para que dibuje entidades en la pantalla. Cargara
-el mapa, chequeara colisiones entre los objetos y actualizara sus movimientos
-y ataques. Gran parte de su implementacion esta hecha, pero hay espacios con el
-texto COMPLETAR que deben completarse segun lo indique la consigna.
+var Jugador = function() {
+  this.sprite = 'imagenes/auto_rojo_abajo.png';
+  this.x = 130;
+  this.y = 160;
+  this.ancho = 15;
+  (this.alto = 30), (this.velocidad = 10);
+  this.vidas = 5;
+};
 
-El objeto Juego contiene mucho codigo. Tomate tu tiempo para leerlo tranquilo
-y entender que es lo que hace en cada una de sus partes. */
+console.log(window.test);
+
+Jugador.prototype.mover = function(movX, movY, sprite, ancho, alto) {
+  this.x = movX + this.x;
+  this.y = movY + this.y;
+  this.sprite = sprite;
+  this.ancho = ancho;
+  this.alto = alto;
+};
+
+Jugador.prototype.perdervidas = function(cantVidas) {
+  this.vidas = this.vidas - cantVidas;
+};
+
+const Personaje = new Jugador();
+
+var Obstaculo = function(sprite, x, y, ancho, alto, potencia) {
+  this.sprite = sprite;
+  this.x = x;
+  this.y = y;
+  this.ancho = ancho;
+  this.alto = alto;
+  this.potencia = potencia;
+
+  // Implementar el metodo chocar(jugador) para que al chocar con un obstaculo
+  // el jugador pierda vidas
+};
+
+var Dibujante = {
+  canvas: document.createElement('canvas'),
+
+  borrarAreaDeJuego: function() {
+    this.canvas
+      .getContext('2d')
+      .clearRect(0, 0, this.canvas.width, this.canvas.height);
+  },
+
+  inicializarCanvas: function(anchoCanvas, altoCanvas) {
+    this.canvas.width = anchoCanvas;
+    this.canvas.height = altoCanvas;
+    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+  },
+
+  /* Dibuja una imagen a partir de su ruta, en la posicion x, y
+  con un ancho y alto dado. Es usada, por ejemplo, para pintar el mapa y los
+  carteles de game over.*/
+  dibujarImagen: function(ruta, x, y, ancho, alto) {
+    var imagen = window.Resources.get(ruta);
+    this.canvas.getContext('2d').drawImage(imagen, x, y, ancho, alto);
+  },
+
+  /* Dibuja una entidad en el juego, esto puede ser el jugador, un enemigo, etc
+   es decir, cualquiera objeto que separ responder a los mensajes: sprite, x, y, ancho y alto*/
+  dibujarEntidad: function(entidad) {
+    this.dibujarImagen(
+      entidad.sprite,
+      entidad.x,
+      entidad.y,
+      entidad.ancho,
+      entidad.alto
+    );
+  },
+
+  /* Dibuja un rectangulo del color pasado por paramentro en la posicion x, y
+   con ancho y alto*/
+  dibujarRectangulo: function(color, x, y, ancho, alto) {
+    var ctx = this.canvas.getContext('2d');
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, ancho, alto);
+  }
+};
 
 var Juego = {
-  // Aca se configura el tamanio del canvas del juego
   anchoCanvas: 961,
   altoCanvas: 577,
-  jugador: Jugador,
-  vidasInicial: Jugador.vidas,
-  // Indica si el jugador gano
+  jugador: Personaje,
+  vidasInicial: Personaje.vidas,
   ganador: false,
 
   obstaculosCarretera: [
     /*Aca se van a agregar los obstaculos visibles. Tenemos una valla horizontal
     de ejemplo, pero podras agregar muchos mas. */
     new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1)
-
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -43,18 +111,15 @@ var Juego = {
     new Obstaculo('', 887, 79, 56, 480, 2)
   ],
   // Los enemigos se agregaran en este arreglo.
-  enemigos: [
-
-  ]
-
-}
+  enemigos: []
+};
 
 /* Se cargan los recursos de las imagenes, para tener un facil acceso
 a ellos. No hace falta comprender esta parte. Pero si queres agregar tus propies
 imagenes tendras que poner su ruta en la lista para que pueda ser precargada como
 todas las demas. */
 Juego.iniciarRecursos = function() {
-  Resources.load([
+  window.Resources.load([
     'imagenes/mapa.png',
     'imagenes/mensaje_gameover.png',
     'imagenes/Splash.png',
@@ -74,7 +139,7 @@ Juego.iniciarRecursos = function() {
     'imagenes/auto_verde_abajo.png',
     'imagenes/auto_verde_derecha.png'
   ]);
-  Resources.onReady(this.comenzar.bind(Juego));
+  window.Resources.onReady(this.comenzar.bind(Juego));
 };
 
 // Agrega los bordes de las veredas a los obstaculos de la carretera
@@ -92,7 +157,6 @@ Juego.comenzar = function() {
 };
 
 Juego.buclePrincipal = function() {
-
   // Con update se actualiza la logica del juego, tanto ataques como movimientos
   this.update();
   // Funcion que dibuja por cada fotograma a los objetos en pantalla.
@@ -104,33 +168,46 @@ Juego.buclePrincipal = function() {
 Juego.update = function() {
   this.calcularAtaques();
   this.moverEnemigos();
-}
+};
 // Captura las teclas y si coincide con alguna de las flechas tiene que
 // hacer que el jugador principal se mueva
 Juego.capturarMovimiento = function(tecla) {
   var movX = 0;
   var movY = 0;
+  var sprite = '';
+  var ancho = 15;
+  var alto = 30;
   var velocidad = this.jugador.velocidad;
 
   // El movimiento esta determinado por la velocidad del jugador
+
   if (tecla == 'izq') {
     movX = -velocidad;
+    alto = 15;
+    ancho = 30;
+    sprite = 'imagenes/auto_rojo_izquierda.png';
   }
   if (tecla == 'arriba') {
     movY = -velocidad;
+    sprite = 'imagenes/auto_rojo_arriba.png';
   }
   if (tecla == 'der') {
+    sprite = 'imagenes/auto_rojo_derecha.png';
     movX = velocidad;
+    alto = 15;
+    ancho = 30;
   }
   if (tecla == 'abajo') {
+    sprite = 'imagenes/auto_rojo_abajo.png';
     movY = velocidad;
   }
 
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
   if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
+    Personaje.mover(movX, movY, sprite, ancho, alto);
+    this.dibujarEntidad(Personaje);
     /* Aca tiene que estar la logica para mover al jugador invocando alguno
     de sus metodos  */
-
     /* COMPLETAR */
   }
 };
@@ -141,10 +218,10 @@ Juego.dibujar = function() {
   //Se pinta la imagen de fondo segun el estado del juego
   this.dibujarFondo();
 
-
   /* Aca hay que agregar la logica para poder dibujar al jugador principal
   utilizando al dibujante y los metodos que nos brinda.
   "Dibujante dibuja al jugador" */
+  Dibujante.dibujarEntidad(Personaje);
 
   /* Completar */
 
@@ -162,12 +239,10 @@ Juego.dibujar = function() {
   var tamanio = this.anchoCanvas / this.vidasInicial;
   Dibujante.dibujarRectangulo('white', 0, 0, this.anchoCanvas, 8);
   for (var i = 0; i < this.jugador.vidas; i++) {
-    var x = tamanio * i
+    var x = tamanio * i;
     Dibujante.dibujarRectangulo('red', x, 0, tamanio, 8);
   }
 };
-
-
 
 /* Recorre los enemigos haciendo que se muevan. De la misma forma que hicimos
 un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
@@ -182,7 +257,9 @@ Para chequear las colisiones estudiar el metodo posicionValida. Alli
 se ven las colisiones con los obstaculos. En este caso sera con los zombies. */
 Juego.calcularAtaques = function() {
   this.enemigos.forEach(function(enemigo) {
-    if (this.intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)) {
+    if (
+      this.intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)
+    ) {
       /* Si el enemigo colisiona debe empezar su ataque
       COMPLETAR */
     } else {
@@ -192,43 +269,50 @@ Juego.calcularAtaques = function() {
   }, this);
 };
 
-
-
 /* Aca se chequea si el jugador se peude mover a la posicion destino.
  Es decir, que no haya obstaculos que se interpongan. De ser asi, no podra moverse */
 Juego.chequearColisiones = function(x, y) {
-  var puedeMoverse = true
+  var puedeMoverse = true;
   this.obstaculos().forEach(function(obstaculo) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
-
       /*COMPLETAR, obstaculo debe chocar al jugador*/
 
-      puedeMoverse = false
+      puedeMoverse = false;
     }
-  }, this)
-  return puedeMoverse
+  }, this);
+  return puedeMoverse;
 };
 
 /* Este metodo chequea si los elementos 1 y 2 si cruzan en x e y
  x e y representan la coordenada a la cual se quiere mover el elemento2*/
 Juego.intersecan = function(elemento1, elemento2, x, y) {
-  var izquierda1 = elemento1.x
-  var derecha1 = izquierda1 + elemento1.ancho
-  var techo1 = elemento1.y
-  var piso1 = techo1 + elemento1.alto
-  var izquierda2 = x
-  var derecha2 = izquierda2 + elemento2.ancho
-  var techo2 = y
-  var piso2 = y + elemento2.alto
+  var izquierda1 = elemento1.x;
+  var derecha1 = izquierda1 + elemento1.ancho;
+  var techo1 = elemento1.y;
+  var piso1 = techo1 + elemento1.alto;
+  var izquierda2 = x;
+  var derecha2 = izquierda2 + elemento2.ancho;
+  var techo2 = y;
+  var piso2 = y + elemento2.alto;
 
-  return ((piso1 >= techo2) && (techo1 <= piso2) &&
-    (derecha1 >= izquierda2) && (izquierda1 <= derecha2))
+  return (
+    piso1 >= techo2 &&
+    techo1 <= piso2 &&
+    derecha1 >= izquierda2 &&
+    izquierda1 <= derecha2
+  );
 };
 
 Juego.dibujarFondo = function() {
   // Si se termino el juego hay que mostrar el mensaje de game over de fondo
   if (this.terminoJuego()) {
-    Dibujante.dibujarImagen('imagenes/mensaje_gameover.png', 0, 5, this.anchoCanvas, this.altoCanvas);
+    Dibujante.dibujarImagen(
+      'imagenes/mensaje_gameover.png',
+      0,
+      5,
+      this.anchoCanvas,
+      this.altoCanvas
+    );
     document.getElementById('reiniciar').style.visibility = 'visible';
   }
 
@@ -237,7 +321,13 @@ Juego.dibujarFondo = function() {
     Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
     document.getElementById('reiniciar').style.visibility = 'visible';
   } else {
-    Dibujante.dibujarImagen('imagenes/mapa.png', 0, 5, this.anchoCanvas, this.altoCanvas);
+    Dibujante.dibujarImagen(
+      'imagenes/mapa.png',
+      0,
+      5,
+      this.anchoCanvas,
+      this.altoCanvas
+    );
   }
 };
 
@@ -247,7 +337,7 @@ Juego.terminoJuego = function() {
 
 /* Se gana el juego si se sobre pasa cierto altura y */
 Juego.ganoJuego = function() {
-  return (this.jugador.y + this.jugador.alto) > 530;
+  return this.jugador.y + this.jugador.alto > 530;
 };
 
 Juego.iniciarRecursos();
