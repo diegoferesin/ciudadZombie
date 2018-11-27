@@ -1,107 +1,3 @@
-/* El objeto dibujante se encarga de manipular el canvas y hacer todo lo necesario
-para poder pintar en la pantalla. Es un objeto que abstrae las complejidades del
-canvas, brindandonos una interfaz para controlarlo facilmente en el juego.
-No tenes que preocuparte por este archivo, solo saber como usar sus funciones. */
-
-var Dibujante = {
-  canvas: document.createElement('canvas'),
-
-  borrarAreaDeJuego: function() {
-    this.canvas
-      .getContext('2d')
-      .clearRect(0, 0, this.canvas.width, this.canvas.height);
-  },
-
-  inicializarCanvas: function(anchoCanvas, altoCanvas) {
-    this.canvas.width = anchoCanvas;
-    this.canvas.height = altoCanvas;
-    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-  },
-
-  /* Dibuja una imagen a partir de su ruta, en la posicion x, y
-  con un ancho y alto dado. Es usada, por ejemplo, para pintar el mapa y los
-  carteles de game over.*/
-  dibujarImagen: function(ruta, x, y, ancho, alto) {
-    var imagen = Resources.get(ruta);
-    this.canvas.getContext('2d').drawImage(imagen, x, y, ancho, alto);
-  },
-
-  /* Dibuja una entidad en el juego, esto puede ser el jugador, un enemigo, etc
-   es decir, cualquiera objeto que separ responder a los mensajes: sprite, x, y, ancho y alto*/
-  dibujarEntidad: function(entidad) {
-    this.dibujarImagen(
-      entidad.sprite,
-      entidad.x,
-      entidad.y,
-      entidad.ancho,
-      entidad.alto
-    );
-  },
-
-  /* Dibuja un rectangulo del color pasado por paramentro en la posicion x, y
-   con ancho y alto*/
-  dibujarRectangulo: function(color, x, y, ancho, alto) {
-    var ctx = this.canvas.getContext('2d');
-    ctx.fillStyle = color;
-    ctx.fillRect(x, y, ancho, alto);
-  }
-};
-
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // -------
-
-/* Un objeto que representa a los obstaculos. Recibe un sprite que tendra la
-imagen que lo representa y una potencia indicando cuando danio hace al chocar
-al jugador, ademas de los parametros comunes x, y, ancho y alto*/
-var Obstaculo = function(sprite, x, y, ancho, alto, potencia) {
-  this.sprite = sprite;
-  this.x = x;
-  this.y = y;
-  this.ancho = ancho;
-  this.alto = alto;
-  this.potencia = potencia;
-
-  // Implementar el metodo chocar(jugador) para que al chocar con un obstaculo
-  // el jugador pierda vidas
-};
-
-// Obstaculo.prototype.quitarVidas = quitarVidasFn (puedeMoverse) {
-//   Jugador.vidas - cantVidas;
-// }
-
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // -------
-
-/* El objeto jugador es un objeto literal que se encuentra incompleto.
- Solo tiene asignadas algunas de sus propiedades y ningun metodo */
-var Jugador = function() {
-  /* el sprite contiene la ruta de la imagen
-*/
-  this.sprite = 'imagenes/auto_rojo_abajo.png';
-  this.x = 130;
-  this.y = 160;
-  this.ancho = 15;
-  this.alto = 30;
-  this.velocidad = 10;
-  this.vidas = 5;
-  // Hay que agregar lo que falte al jugador: movimientos, perdida de vidas,
-  // y todo lo que haga falta para que cumpla con sus responsabilidades
-};
-
-Jugador.prototype.mover = function(movX, movY, sprite, ancho, alto) {
-  this.x = movX + this.x;
-  this.y = movY + this.y;
-  this.sprite = sprite;
-  this.ancho = ancho;
-  this.alto = alto;
-};
-
-Jugador.prototype.perderVidas = function perderVidasFn(cantVidas) {
-  this.vidas = this.vidas - cantVidas;
-};
-
-var Personaje = new Jugador();
-
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // -------
-
 /* El objeto Juego sera el encargado del control de todo el resto de los Objetos
 existentes.
 Le dara ordenes al Dibujante para que dibuje entidades en la pantalla. Cargara
@@ -136,10 +32,10 @@ var Juego = {
     new Obstaculo('imagenes/bache.png', 510, 130, 30, 30, 1),
     new Obstaculo('imagenes/bache.png', 300, 485, 30, 30, 1),
     new Obstaculo('imagenes/bache.png', 800, 400, 30, 30, 1),
-    new Obstaculo('imagenes/auto_verde_abajo.png', 180, 230, 15, 30, 1),
-    new Obstaculo('imagenes/auto_verde_abajo.png', 860, 375, 15, 30, 1),
-    new Obstaculo('imagenes/auto_verde_derecha.png', 370, 470, 30, 15, 1),
-    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 1)
+    new Obstaculo('imagenes/auto_verde_abajo.png', 180, 230, 15, 30, 2),
+    new Obstaculo('imagenes/auto_verde_abajo.png', 860, 375, 15, 30, 2),
+    new Obstaculo('imagenes/auto_verde_derecha.png', 370, 470, 30, 15, 2),
+    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 5)
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -256,10 +152,16 @@ Juego.capturarMovimiento = function(tecla) {
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
   if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
     Personaje.mover(movX, movY, sprite, ancho, alto);
-    this.dibujarEntidad(Personaje);
+    Dibujante.dibujarEntidad(Personaje);
     /* Aca tiene que estar la logica para mover al jugador invocando alguno
     de sus metodos  */
-    /* COMPLETAR */
+    // this.jugador.mover(
+    //   this.movX,
+    //   this.movY,
+    //   this.sprite,
+    //   this.ancho,
+    //   this.alto
+    // )
   }
 };
 
@@ -327,7 +229,7 @@ Juego.chequearColisiones = function(x, y) {
   this.obstaculos().forEach(function(obstaculo) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
       /*COMPLETAR, obstaculo debe chocar al jugador*/
-
+      obstaculo.chocar(this.jugador);
       puedeMoverse = false;
     }
   }, this);
