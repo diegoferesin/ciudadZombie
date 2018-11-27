@@ -35,7 +35,9 @@ var Juego = {
     new Obstaculo('imagenes/auto_verde_abajo.png', 180, 230, 15, 30, 2),
     new Obstaculo('imagenes/auto_verde_abajo.png', 860, 375, 15, 30, 2),
     new Obstaculo('imagenes/auto_verde_derecha.png', 370, 470, 30, 15, 2),
-    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 5)
+    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 5),
+    new Obstaculo('imagenes/metafinal.png', 905, 535, 30, 30, 0),
+    new Obstaculo('imagenes/metafinalletras.png', 763, 535, 125, 12, 0)
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -84,7 +86,9 @@ Juego.iniciarRecursos = function() {
     'imagenes/auto_rojo_izquierda.png',
     'imagenes/auto_verde_abajo.png',
     'imagenes/auto_verde_derecha.png',
-    'imagenes/pachorra.png'
+    'imagenes/pachorra.png',
+    'imagenes/metafinal.png',
+    'imagenes/metafinalletras.png'
   ]);
   window.Resources.onReady(this.comenzar.bind(Juego));
 };
@@ -187,6 +191,9 @@ Juego.dibujar = function() {
   this.enemigos.forEach(function(enemigo) {
     /* Completar */
   });
+
+  // El dibujante dibuja la meta de llegada
+  Dibujante.dibujarRectangulo('red', 761, 550, 125, 12);
 
   // El dibujante dibuja las vidas del jugador
   var tamanio = this.anchoCanvas / this.vidasInicial;
