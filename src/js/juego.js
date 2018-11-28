@@ -35,9 +35,7 @@ var Juego = {
     new Obstaculo('imagenes/auto_verde_abajo.png', 180, 230, 15, 30, 2),
     new Obstaculo('imagenes/auto_verde_abajo.png', 860, 375, 15, 30, 2),
     new Obstaculo('imagenes/auto_verde_derecha.png', 370, 470, 30, 15, 2),
-    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 5),
-    new Obstaculo('imagenes/metafinal.png', 905, 535, 30, 30, 0),
-    new Obstaculo('imagenes/metafinalletras.png', 763, 535, 125, 12, 0)
+    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 5)
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -59,7 +57,16 @@ var Juego = {
     new Obstaculo('', 887, 79, 56, 480, 2)
   ],
   // Los enemigos se agregaran en este arreglo.
-  enemigos: []
+  enemigos: [
+    // var ZombieCaminante = function(sprite, x, y, ancho, alto, velocidad, rangoMov)
+    new ZombieCaminante('imagenes/zombie1.png', 100, 200, 10, 10, 576),
+    'verde'
+
+    // ZombieCaminante(),
+    // ZombieCaminante(),
+    // ZombieCaminante(),
+    // ZombieCaminante()
+  ]
 };
 
 /* Se cargan los recursos de las imagenes, para tener un facil acceso
@@ -86,9 +93,7 @@ Juego.iniciarRecursos = function() {
     'imagenes/auto_rojo_izquierda.png',
     'imagenes/auto_verde_abajo.png',
     'imagenes/auto_verde_derecha.png',
-    'imagenes/pachorra.png',
-    'imagenes/metafinal.png',
-    'imagenes/metafinalletras.png'
+    'imagenes/pachorra.png'
   ]);
   window.Resources.onReady(this.comenzar.bind(Juego));
 };
