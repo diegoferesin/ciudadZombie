@@ -19,23 +19,25 @@ var Juego = {
     /*Aca se van a agregar los obstaculos visibles. Tenemos una valla horizontal
     de ejemplo, pero podras agregar muchos mas. */
     // var Obstaculo = function(sprite, x, y, ancho, alto, potencia)
-    new Obstaculo('imagenes/valla_horizontal.png', 100, 430, 30, 30, 1),
-    new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1),
-    new Obstaculo('imagenes/valla_horizontal.png', 130, 430, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 100, 440, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 70, 440, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 130, 440, 30, 30, 1),
     new Obstaculo('imagenes/valla_horizontal.png', 130, 90, 30, 30, 1),
     new Obstaculo('imagenes/valla_horizontal.png', 160, 90, 30, 30, 1),
-    new Obstaculo('imagenes/valla_horizontal.png', 500, 400, 30, 30, 1),
-    new Obstaculo('imagenes/valla_vertical.png', 470, 430, 30, 30, 1),
-    new Obstaculo('imagenes/valla_vertical.png', 470, 460, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png', 530, 400, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png', 470, 450, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png', 470, 480, 30, 30, 1),
     new Obstaculo('imagenes/valla_vertical.png', 190, 460, 30, 30, 1),
     new Obstaculo('imagenes/bache.png', 180, 280, 30, 30, 1),
     new Obstaculo('imagenes/bache.png', 510, 130, 30, 30, 1),
     new Obstaculo('imagenes/bache.png', 300, 485, 30, 30, 1),
-    new Obstaculo('imagenes/bache.png', 800, 400, 30, 30, 1),
+    new Obstaculo('imagenes/bache.png', 790, 400, 30, 30, 1),
     new Obstaculo('imagenes/auto_verde_abajo.png', 180, 230, 15, 30, 2),
-    new Obstaculo('imagenes/auto_verde_abajo.png', 860, 375, 15, 30, 2),
+    new Obstaculo('imagenes/auto_verde_abajo.png', 870, 375, 15, 30, 2),
     new Obstaculo('imagenes/auto_verde_derecha.png', 370, 470, 30, 15, 2),
-    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 5)
+    new Obstaculo('imagenes/pachorra.png', 850, 90, 30, 30, 5),
+    new Obstaculo('imagenes/metafinal.png', 905, 535, 30, 30, 0),
+    new Obstaculo('imagenes/metafinalletras.png', 763, 550, 125, 12, 0)
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -57,15 +59,84 @@ var Juego = {
     new Obstaculo('', 887, 79, 56, 480, 2)
   ],
   // Los enemigos se agregaran en este arreglo.
+  // var ZombieCaminante = function(sprite, x, y, ancho, alto, velocidad, rangoMov)
   enemigos: [
-    // var ZombieCaminante = function(sprite, x, y, ancho, alto, velocidad, rangoMov)
-    new ZombieCaminante('imagenes/zombie1.png', 100, 200, 10, 10, 576),
-    'verde'
-
-    // ZombieCaminante(),
-    // ZombieCaminante(),
-    // ZombieCaminante(),
-    // ZombieCaminante()
+    new ZombieCaminante('imagenes/zombie1.png', 18, 23, 10, 10, 10, {
+      desdeX: 0,
+      hastaX: 961,
+      desdeY: 0,
+      hastaY: 577
+    }),
+    new ZombieCaminante('imagenes/zombie2.png', 69, 507, 10, 10, 10, {
+      desdeX: 0,
+      hastaX: 961,
+      desdeY: 0,
+      hastaY: 577
+    }),
+    new ZombieCaminante('imagenes/zombie3.png', 587, 147, 10, 10, 10, {
+      desdeX: 0,
+      hastaX: 961,
+      desdeY: 0,
+      hastaY: 577
+    }),
+    new ZombieCaminante('imagenes/zombie4.png', 346, 230, 10, 10, 10, {
+      desdeX: 0,
+      hastaX: 961,
+      desdeY: 0,
+      hastaY: 577
+    }),
+    new ZombieCaminante('imagenes/zombie1.png', 196, 267, 10, 10, 10, {
+      desdeX: 0,
+      hastaX: 961,
+      desdeY: 0,
+      hastaY: 577
+    }),
+    // var ZombieConductor = function(sprite, x, y, ancho, alto, velocidad, rangoMov, direccion)
+    new ZombieConductor(
+      'imagenes/tren_horizontal.png',
+      0,
+      322,
+      90,
+      30,
+      30,
+      {
+        desdeX: 0,
+        hastaX: 961,
+        desdeY: 0,
+        hastaY: 577
+      },
+      'h'
+    ),
+    new ZombieConductor(
+      'imagenes/tren_vertical.png',
+      644,
+      0,
+      30,
+      90,
+      30,
+      {
+        desdeX: 0,
+        hastaX: 961,
+        desdeY: 0,
+        hastaY: 577
+      },
+      'v'
+    ),
+    new ZombieConductor(
+      'imagenes/tren_vertical.png',
+      678,
+      90,
+      30,
+      90,
+      30,
+      {
+        desdeX: 0,
+        hastaX: 961,
+        desdeY: 0,
+        hastaY: 577
+      },
+      'v'
+    )
   ]
 };
 
@@ -93,7 +164,9 @@ Juego.iniciarRecursos = function() {
     'imagenes/auto_rojo_izquierda.png',
     'imagenes/auto_verde_abajo.png',
     'imagenes/auto_verde_derecha.png',
-    'imagenes/pachorra.png'
+    'imagenes/pachorra.png',
+    'imagenes/metafinal.png',
+    'imagenes/metafinalletras.png'
   ]);
   window.Resources.onReady(this.comenzar.bind(Juego));
 };
@@ -137,33 +210,64 @@ Juego.capturarMovimiento = function(tecla) {
 
   // El movimiento esta determinado por la velocidad del jugador
 
-  if (tecla == 'izq') {
-    movX = -velocidad;
-    alto = 15;
-    ancho = 30;
-    sprite = 'imagenes/auto_rojo_izquierda.png';
+  switch (tecla) {
+    case 'izq':
+      movX = -velocidad;
+      alto = 15;
+      ancho = 30;
+      sprite = 'imagenes/auto_rojo_izquierda.png';
+      break;
+
+    case 'arriba':
+      movY = -velocidad;
+      sprite = 'imagenes/auto_rojo_arriba.png';
+      break;
+
+    case 'der':
+      sprite = 'imagenes/auto_rojo_derecha.png';
+      movX = velocidad;
+      alto = 15;
+      ancho = 30;
+      break;
+
+    case 'abajo':
+      sprite = 'imagenes/auto_rojo_abajo.png';
+      movY = velocidad;
+      break;
+
+    default:
+      // alert('Utiliza las flechas para moverte');
+      console.log('Utiliza las flechas para moverte');
+      break;
   }
-  if (tecla == 'arriba') {
-    movY = -velocidad;
-    sprite = 'imagenes/auto_rojo_arriba.png';
-  }
-  if (tecla == 'der') {
-    sprite = 'imagenes/auto_rojo_derecha.png';
-    movX = velocidad;
-    alto = 15;
-    ancho = 30;
-  }
-  if (tecla == 'abajo') {
-    sprite = 'imagenes/auto_rojo_abajo.png';
-    movY = velocidad;
-  }
+
+  // if (tecla == 'izq') {
+  //   movX = -velocidad;
+  //   alto = 15;
+  //   ancho = 30;
+  //   sprite = 'imagenes/auto_rojo_izquierda.png';
+  // }
+  // if (tecla == 'arriba') {
+  //   movY = -velocidad;
+  //   sprite = 'imagenes/auto_rojo_arriba.png';
+  // }
+  // if (tecla == 'der') {
+  //   sprite = 'imagenes/auto_rojo_derecha.png';
+  //   movX = velocidad;
+  //   alto = 15;
+  //   ancho = 30;
+  // }
+  // if (tecla == 'abajo') {
+  //   sprite = 'imagenes/auto_rojo_abajo.png';
+  //   movY = velocidad;
+  // }
 
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
   if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
-    Personaje.mover(movX, movY, sprite, ancho, alto);
     Dibujante.dibujarEntidad(Personaje);
     /* Aca tiene que estar la logica para mover al jugador invocando alguno
     de sus metodos  */
+    Personaje.mover(movX, movY, sprite, ancho, alto);
     // this.jugador.mover(
     //   this.movX,
     //   this.movY,
@@ -183,9 +287,12 @@ Juego.dibujar = function() {
   /* Aca hay que agregar la logica para poder dibujar al jugador principal
   utilizando al dibujante y los metodos que nos brinda.
   "Dibujante dibuja al jugador" */
+  /* Completar */
+
   Dibujante.dibujarEntidad(Personaje);
 
-  /* Completar */
+  // El dibujante dibuja la meta de llegada
+  Dibujante.dibujarRectangulo('red', 761, 550, 125, 12);
 
   // Se recorren los obstaculos de la carretera pintandolos
   this.obstaculosCarretera.forEach(function(obstaculo) {
@@ -195,10 +302,8 @@ Juego.dibujar = function() {
   // Se recorren los enemigos pintandolos
   this.enemigos.forEach(function(enemigo) {
     /* Completar */
+    Dibujante.dibujarEntidad(enemigo);
   });
-
-  // El dibujante dibuja la meta de llegada
-  Dibujante.dibujarRectangulo('red', 761, 550, 125, 12);
 
   // El dibujante dibuja las vidas del jugador
   var tamanio = this.anchoCanvas / this.vidasInicial;
@@ -212,7 +317,7 @@ Juego.dibujar = function() {
 /* Recorre los enemigos haciendo que se muevan. De la misma forma que hicimos
 un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
-Juego.moverEnemigos = function() {
+Juego.moverEnemigos = function(enemigo) {
   /* COMPLETAR */
 };
 
