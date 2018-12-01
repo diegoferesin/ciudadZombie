@@ -241,40 +241,12 @@ Juego.capturarMovimiento = function(tecla) {
       break;
   }
 
-  // if (tecla == 'izq') {
-  //   movX = -velocidad;
-  //   alto = 15;
-  //   ancho = 30;
-  //   sprite = 'imagenes/auto_rojo_izquierda.png';
-  // }
-  // if (tecla == 'arriba') {
-  //   movY = -velocidad;
-  //   sprite = 'imagenes/auto_rojo_arriba.png';
-  // }
-  // if (tecla == 'der') {
-  //   sprite = 'imagenes/auto_rojo_derecha.png';
-  //   movX = velocidad;
-  //   alto = 15;
-  //   ancho = 30;
-  // }
-  // if (tecla == 'abajo') {
-  //   sprite = 'imagenes/auto_rojo_abajo.png';
-  //   movY = velocidad;
-  // }
-
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
   if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
     Dibujante.dibujarEntidad(Personaje);
     /* Aca tiene que estar la logica para mover al jugador invocando alguno
     de sus metodos  */
     Personaje.mover(movX, movY, sprite, ancho, alto);
-    // this.jugador.mover(
-    //   this.movX,
-    //   this.movY,
-    //   this.sprite,
-    //   this.ancho,
-    //   this.alto
-    // )
   }
 };
 
@@ -319,6 +291,7 @@ un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
 Juego.moverEnemigos = function(enemigo) {
   /* COMPLETAR */
+  // this.enemigos.forEach(Enemigo.mover(enemigo));
 };
 
 /* Recorre los enemigos para ver cual esta colisionando con el jugador
