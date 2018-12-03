@@ -39,21 +39,6 @@ ZombieCaminante.prototype.mover = function() {
   }
 };
 
-// var caminanteNuevo = new ZombieCaminante(
-//   'imagenes/zombie4.png',
-//   346,
-//   230,
-//   10,
-//   10,
-//   10,
-//   {
-//     desdeX: 0,
-//     hastaX: 961,
-//     desdeY: 0,
-//     hastaY: 577
-//   }
-// );
-
 /* El ataque lo toma de su prototipo Enemigo que ya implementa un metodo atacar
 haciendole perder 1 vida al jugador. Si se quiere modificar el valor de ataque
 del zombie caminante habra que reimplementar este metodo desde el objeto ZombieCaminante
