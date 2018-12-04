@@ -43,7 +43,7 @@ var Juego = {
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
    que son invisibles. No tenes que preocuparte por ellos.*/
   bordes: [
-    // // Bordes
+    // Bordes
     new Obstaculo('', 0, 5, 961, 18, 0),
     new Obstaculo('', 0, 559, 961, 18, 0),
     new Obstaculo('', 0, 5, 18, 572, 0),
@@ -61,31 +61,31 @@ var Juego = {
   // Los enemigos se agregaran en este arreglo.
   // var ZombieCaminante = function(sprite, x, y, ancho, alto, velocidad, rangoMov)
   enemigos: [
-    new ZombieCaminante('imagenes/zombie1.png', 18, 23, 10, 10, 10, {
+    new ZombieCaminante('imagenes/zombie1.png', 18, 23, 10, 10, 0.5, {
       desdeX: 0,
       hastaX: 961,
       desdeY: 0,
       hastaY: 577
     }),
-    new ZombieCaminante('imagenes/zombie2.png', 69, 507, 10, 10, 10, {
+    new ZombieCaminante('imagenes/zombie2.png', 69, 507, 10, 10, 0.5, {
       desdeX: 0,
       hastaX: 961,
       desdeY: 0,
       hastaY: 577
     }),
-    new ZombieCaminante('imagenes/zombie3.png', 587, 147, 10, 10, 10, {
+    new ZombieCaminante('imagenes/zombie3.png', 587, 147, 10, 10, 0.5, {
       desdeX: 0,
       hastaX: 961,
       desdeY: 0,
       hastaY: 577
     }),
-    new ZombieCaminante('imagenes/zombie4.png', 346, 230, 10, 10, 10, {
+    new ZombieCaminante('imagenes/zombie4.png', 346, 230, 10, 10, 0.5, {
       desdeX: 0,
       hastaX: 961,
       desdeY: 0,
       hastaY: 577
     }),
-    new ZombieCaminante('imagenes/zombie1.png', 196, 267, 10, 10, 10, {
+    new ZombieCaminante('imagenes/zombie1.png', 196, 267, 10, 10, 0.5, {
       desdeX: 0,
       hastaX: 961,
       desdeY: 0,
@@ -94,14 +94,29 @@ var Juego = {
     // var ZombieConductor = function(sprite, x, y, ancho, alto, velocidad, rangoMov, direccion)
     new ZombieConductor(
       'imagenes/tren_horizontal.png',
-      0,
+      90,
       322,
       90,
       30,
-      30,
+      5,
       {
         desdeX: 0,
-        hastaX: 961,
+        hastaX: 771,
+        desdeY: 0,
+        hastaY: 577
+      },
+      'h'
+    ),
+    new ZombieConductor(
+      'imagenes/tren_horizontal.png',
+      90,
+      322,
+      90,
+      30,
+      5,
+      {
+        desdeX: 90,
+        hastaX: 871,
         desdeY: 0,
         hastaY: 577
       },
@@ -110,15 +125,30 @@ var Juego = {
     new ZombieConductor(
       'imagenes/tren_vertical.png',
       644,
-      0,
+      180,
       30,
       90,
+      2,
+      {
+        desdeX: 0,
+        hastaX: 961,
+        desdeY: 90,
+        hastaY: 487
+      },
+      'v'
+    ),
+    new ZombieConductor(
+      'imagenes/tren_vertical.png',
+      644,
+      90,
       30,
+      90,
+      2,
       {
         desdeX: 0,
         hastaX: 961,
         desdeY: 0,
-        hastaY: 577
+        hastaY: 397
       },
       'v'
     ),
@@ -128,12 +158,12 @@ var Juego = {
       90,
       30,
       90,
-      30,
+      5,
       {
         desdeX: 0,
         hastaX: 961,
         desdeY: 0,
-        hastaY: 577
+        hastaY: 487
       },
       'v'
     )
@@ -289,8 +319,12 @@ Juego.dibujar = function() {
 /* Recorre los enemigos haciendo que se muevan. De la misma forma que hicimos
 un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
-Juego.moverEnemigos = function(enemigo) {
+Juego.moverEnemigos = function() {
   /* COMPLETAR */
+  Juego.enemigos.forEach(function(element) {
+    element.mover();
+    Dibujante.dibujarEntidad(element);
+  });
 };
 
 /* Recorre los enemigos para ver cual esta colisionando con el jugador
@@ -304,9 +338,11 @@ Juego.calcularAtaques = function() {
     ) {
       /* Si el enemigo colisiona debe empezar su ataque
       COMPLETAR */
+      enemigo.comenzarAtaque(this.jugador);
     } else {
       /* Sino, debe dejar de atacar
       COMPLETAR */
+      enemigo.dejarDeAtacar();
     }
   }, this);
 };
@@ -356,12 +392,18 @@ Juego.dibujarFondo = function() {
       this.altoCanvas
     );
     document.getElementById('reiniciar').style.visibility = 'visible';
+    (Juego.obstaculosCarretera = ['']),
+      (Juego.bordes = ['']),
+      (Juego.enemigos = ['']);
   }
 
   // Si se gano el juego hay que mostrar el mensaje de ganoJuego de fondo
   else if (this.ganoJuego()) {
     Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
     document.getElementById('reiniciar').style.visibility = 'visible';
+    (Juego.obstaculosCarretera = ['']),
+      (Juego.bordes = ['']),
+      (Juego.enemigos = ['']);
   } else {
     Dibujante.dibujarImagen(
       'imagenes/mapa.png',
