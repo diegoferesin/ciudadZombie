@@ -290,7 +290,6 @@ Juego.dibujar = function() {
   utilizando al dibujante y los metodos que nos brinda.
   "Dibujante dibuja al jugador" */
   /* Completar */
-
   Dibujante.dibujarEntidad(Personaje);
 
   // El dibujante dibuja la meta de llegada
@@ -392,18 +391,12 @@ Juego.dibujarFondo = function() {
       this.altoCanvas
     );
     document.getElementById('reiniciar').style.visibility = 'visible';
-    (Juego.obstaculosCarretera = ['']),
-      (Juego.bordes = ['']),
-      (Juego.enemigos = ['']);
   }
 
   // Si se gano el juego hay que mostrar el mensaje de ganoJuego de fondo
   else if (this.ganoJuego()) {
     Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
     document.getElementById('reiniciar').style.visibility = 'visible';
-    (Juego.obstaculosCarretera = ['']),
-      (Juego.bordes = ['']),
-      (Juego.enemigos = ['']);
   } else {
     Dibujante.dibujarImagen(
       'imagenes/mapa.png',
