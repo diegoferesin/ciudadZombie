@@ -61,13 +61,13 @@ var Juego = {
   // Los enemigos se agregaran en este arreglo.
   // var ZombieCaminante = function(sprite, x, y, ancho, alto, velocidad, rangoMov)
   enemigos: [
-    new ZombieCaminante('imagenes/zombie1.png', 18, 23, 10, 10, 0.5, {
+    new ZombieCaminante('imagenes/zombie1.png', 18, 90, 10, 10, 0.5, {
       desdeX: 0,
       hastaX: 961,
       desdeY: 0,
       hastaY: 577
     }),
-    new ZombieCaminante('imagenes/zombie2.png', 69, 507, 10, 10, 0.5, {
+    new ZombieCaminante('imagenes/zombie2.png', 69, 450, 10, 10, 0.5, {
       desdeX: 0,
       hastaX: 961,
       desdeY: 0,
@@ -224,6 +224,15 @@ Juego.buclePrincipal = function() {
   window.requestAnimationFrame(this.buclePrincipal.bind(this));
 };
 
+Juego.buclePrincipal2 = function() {
+  // Con update se actualiza la logica del juego, tanto ataques como movimientos
+  this.update();
+  // Funcion que dibuja por cada fotograma a los objetos en pantalla.
+  // this.dibujar();
+  // Esto es una forma de llamar a la funcion Juego.buclePrincipal() repetidas veces
+  window.requestAnimationFrame(this.buclePrincipal.bind(this));
+};
+
 Juego.update = function() {
   this.calcularAtaques();
   this.moverEnemigos();
@@ -266,7 +275,7 @@ Juego.capturarMovimiento = function(tecla) {
       break;
 
     default:
-      // alert('Utiliza las flechas para moverte');
+      alert('Utiliza las flechas para moverte');
       console.log('Utiliza las flechas para moverte');
       break;
   }
@@ -290,6 +299,7 @@ Juego.dibujar = function() {
   utilizando al dibujante y los metodos que nos brinda.
   "Dibujante dibuja al jugador" */
   /* Completar */
+
   Dibujante.dibujarEntidad(Personaje);
 
   // El dibujante dibuja la meta de llegada
@@ -397,6 +407,9 @@ Juego.dibujarFondo = function() {
   else if (this.ganoJuego()) {
     Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
     document.getElementById('reiniciar').style.visibility = 'visible';
+    (Juego.obstaculosCarretera = ['']),
+      (Juego.bordes = ['']),
+      (Juego.enemigos = ['']);
   } else {
     Dibujante.dibujarImagen(
       'imagenes/mapa.png',
@@ -428,6 +441,27 @@ document.addEventListener('keydown', function(e) {
     39: 'der',
     40: 'abajo'
   };
+  var codigoValido = e.keyCode;
+  switch (codigoValido) {
+    case 37:
+      Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+      break;
 
-  Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+    case 38:
+      Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+      break;
+
+    case 39:
+      Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+      break;
+
+    case 40:
+      Juego.capturarMovimiento(allowedKeys[e.keyCode]);
+      break;
+
+    default:
+      // alert('Utiliza las flechas para moverte');
+      // console.log('Utiliza las flechas para moverte');
+      break;
+  }
 });
