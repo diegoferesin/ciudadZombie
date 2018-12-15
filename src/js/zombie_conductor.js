@@ -15,17 +15,17 @@ var ZombieConductor = function(
   /*, parametro/s extra de ZombieConductor*/
   direccion
 ) {
-  /* Completar constructor a partir de Enemigo */
+  /* Constructor a partir de Enemigo */
   Enemigo.call(this, sprite, x, y, ancho, alto, velocidad, rangoMov, direccion);
   /* No olvidar agregar la/s propiedad/es unicas de ZombieConductor necesarias */
   this.direccion = direccion;
 };
 
-/* Completar creacion del ZombieConductor */
+/* Creacion del ZombieConductor */
 ZombieConductor.prototype = Object.create(Enemigo.prototype);
 ZombieConductor.prototype.constructor = ZombieConductor;
 
-/* Completar metodos para el movimiento y el ataque */
+/* Metodos para el movimiento y el ataque */
 ZombieConductor.prototype.mover = function moverFn() {
   /* Los movimientos estan basados en un numero aleatorio
   La direccion horizontal es siempre la misma y va ondulando verticalmente.

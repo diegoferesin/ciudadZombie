@@ -2,8 +2,7 @@
 existentes.
 Le dara ordenes al Dibujante para que dibuje entidades en la pantalla. Cargara
 el mapa, chequeara colisiones entre los objetos y actualizara sus movimientos
-y ataques. Gran parte de su implementacion esta hecha, pero hay espacios con el
-texto COMPLETAR que deben completarse segun lo indique la consigna.
+y ataques. 
 
 El objeto Juego contiene mucho codigo. Tomate tu tiempo para leerlo tranquilo
 y entender que es lo que hace en cada una de sus partes. */
@@ -300,7 +299,6 @@ Juego.dibujar = function() {
   /* Aca hay que agregar la logica para poder dibujar al jugador principal
   utilizando al dibujante y los metodos que nos brinda.
   "Dibujante dibuja al jugador" */
-  /* Completar */
 
   Dibujante.dibujarEntidad(this.jugador);
 
@@ -314,7 +312,6 @@ Juego.dibujar = function() {
 
   // Se recorren los enemigos pintandolos
   this.enemigos.forEach(function(enemigo) {
-    /* Completar */
     Dibujante.dibujarEntidad(enemigo);
   });
 
@@ -331,7 +328,6 @@ Juego.dibujar = function() {
 un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
 Juego.moverEnemigos = function() {
-  /* COMPLETAR */
   Juego.enemigos.forEach(function(element) {
     element.mover();
     Dibujante.dibujarEntidad(element);
@@ -347,12 +343,10 @@ Juego.calcularAtaques = function() {
     if (
       this.intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)
     ) {
-      /* Si el enemigo colisiona debe empezar su ataque
-      COMPLETAR */
+      /* Si el enemigo colisiona debe empezar su ataque */
       enemigo.comenzarAtaque(this.jugador);
     } else {
-      /* Sino, debe dejar de atacar
-      COMPLETAR */
+      /* Sino, debe dejar de atacar */
       enemigo.dejarDeAtacar();
     }
   }, this);
@@ -364,7 +358,7 @@ Juego.chequearColisiones = function(x, y) {
   var puedeMoverse = true;
   this.obstaculos().forEach(function(obstaculo) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
-      /*COMPLETAR, obstaculo debe chocar al jugador*/
+      /* Obstaculo debe chocar al jugador*/
       obstaculo.chocar(this.jugador);
       puedeMoverse = false;
     }
