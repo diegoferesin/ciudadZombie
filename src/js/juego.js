@@ -302,7 +302,7 @@ Juego.dibujar = function() {
   "Dibujante dibuja al jugador" */
   /* Completar */
 
-  Dibujante.dibujarEntidad(Personaje);
+  Dibujante.dibujarEntidad(this.jugador);
 
   // El dibujante dibuja la meta de llegada
   Dibujante.dibujarRectangulo('red', 761, 550, 125, 12);
